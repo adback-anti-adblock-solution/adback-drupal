@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * Implements hook_permission().
+ */
+function adback_permission()
+{
+    $permissions = array(
+        'administer adback' => array(
+            'title' => t('Administrate AdBack module'),
+        ),
+    );
+    return $permissions;
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function adback_menu()
+{
+    // Administration pages.
+    $items['admin/config/adback'] = array(
+        'title' => 'AdBack',
+        'description' => 'Configure AdBack Module.',
+        'position' => 'left',
+        'weight' => 0,
+        'page callback' => 'system_admin_menu_block_page',
+        'access arguments' => array('administer adback'),
+        'file' => 'system.admin.inc',
+        'file path' => drupal_get_path('module', 'system'),
+    );
+    $items['admin/config/adback/statistics'] = array(
+        'title' => t('AdBack Statistics'),
+        'description' => 'Show AdBack Statistics',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('adback_admin_statistics'),
+        'access arguments' => array('administer adback'),
+        'file' => 'adback.admin.inc',
+        'weight' => -10,
+    );
+    $items['admin/config/adback/settings'] = array(
+        'title' => 'Account settings',
+        'description' => 'Configure AdBack account.',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('adback_admin_settings'),
+        'access arguments' => array('administer adback'),
+        'file' => 'adback.admin.inc',
+        'weight' => -10,
+    );
+
+    $items['admin/config/adback/logout'] = array(
+        'title' => t('logout'),
+        'page callback' => 'adback_admin_logout',
+        'access arguments' => array('access content'),
+        'file' => 'adback.admin.inc',
+        'type' => MENU_CALLBACK
+    );
+
+    return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function adback_theme()
+{
+    return array(
+        'adback_admin_login' => array(
+            'render element' => 'form',
+            'template'  => 'login',
+            'path' => drupal_get_path('module', 'adback') . '/admin',
+        ),
+        'adback_admin_statistics' => array(
+            'render element' => 'form',
+            'template'  => 'statistics',
+            'path' => drupal_get_path('module', 'adback') . '/admin',
+        ),
+    );
+}
+
+
+function adback_form_alter(&$form, &$form_state, $form_id) {
+
+    if (strpos($form_id, 'adback_') === false) {
+        return;
+    }
+
+    require_once('class-ad-back.php');
+
+    $adback = new AdBack_Generic();
+
+
+    if ($adback->isConnected()) {
+        if($adback->getDomain() == '') {
+            $adback->askDomain();
+        }
+
+    } else {
+        $form['#theme'] = array('adback_admin_login');
+    }
+//    var_dump($form);
+//    var_dump($form_id);
+    /*
+    switch ($form_id) {
+        // Expected format: NODE_TYPE_MACHINE_NAME_node_form
+        case 'resource_node_form':
+            // Requires devel module to be installed.
+            // See all available elements displayed using krumo.
+            $dpm($form);
+            break;
+    }
+    */
+
+}
