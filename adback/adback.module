@@ -1,5 +1,7 @@
 <?php
 
+require_once('lib/AdbackGeneric.php');
+
 /**
  * Implements hook_permission().
  */
@@ -10,9 +12,9 @@ function adback_permission()
             'title' => t('Administrate AdBack module'),
         ),
     );
+
     return $permissions;
 }
-
 
 /**
  * Implements hook_menu().
@@ -31,28 +33,27 @@ function adback_menu()
         'file path' => drupal_get_path('module', 'system'),
     );
     $items['admin/config/adback/statistics'] = array(
-        'title' => t('AdBack Statistics'),
-        'description' => 'Show AdBack Statistics',
+        'title' => t('Statistics'),
+        'description' => 'Show Adback Statistics',
         'page callback' => 'drupal_get_form',
         'page arguments' => array('adback_admin_statistics'),
         'access arguments' => array('administer adback'),
         'file' => 'adback.admin.inc',
-        'weight' => -10,
+        'weight' => -20,
     );
     $items['admin/config/adback/settings'] = array(
-        'title' => 'Account settings',
-        'description' => 'Configure AdBack account.',
+        'title' => t('Settings'),
+        'description' => 'Configure AdBack message.',
         'page callback' => 'drupal_get_form',
         'page arguments' => array('adback_admin_settings'),
         'access arguments' => array('administer adback'),
         'file' => 'adback.admin.inc',
         'weight' => -10,
     );
-
     $items['admin/config/adback/logout'] = array(
         'title' => t('logout'),
         'page callback' => 'adback_admin_logout',
-        'access arguments' => array('access content'),
+        'access arguments' => array('administer adback'),
         'file' => 'adback.admin.inc',
         'type' => MENU_CALLBACK
     );
@@ -79,17 +80,20 @@ function adback_theme()
     );
 }
 
-
-function adback_form_alter(&$form, &$form_state, $form_id) {
-
+/**
+ * Implements hook_form_alter().
+ *
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function adback_form_alter(&$form, &$form_state, $form_id)
+{
     if (strpos($form_id, 'adback_') === false) {
         return;
     }
 
-    require_once('class-ad-back.php');
-
-    $adback = new AdBack_Generic();
-
+    $adback = AdBackGeneric::getInstance();
 
     if ($adback->isConnected()) {
         if($adback->getDomain() == '') {
@@ -99,17 +103,45 @@ function adback_form_alter(&$form, &$form_state, $form_id) {
     } else {
         $form['#theme'] = array('adback_admin_login');
     }
-//    var_dump($form);
-//    var_dump($form_id);
-    /*
-    switch ($form_id) {
-        // Expected format: NODE_TYPE_MACHINE_NAME_node_form
-        case 'resource_node_form':
-            // Requires devel module to be installed.
-            // See all available elements displayed using krumo.
-            $dpm($form);
-            break;
-    }
-    */
+}
 
+/**
+ * Implements hook_preprocess_html().
+ *
+ * @param $variables
+ */
+function adback_preprocess_page(&$variables)
+{
+    if (FALSE === is_array($variables)) {
+        return;
+    }
+
+    if (arg(0) == 'admin') {
+        return;
+    }
+
+    $node = null;
+    if (arg(0) == 'node' && is_numeric(arg(1)) && !arg(2)) {
+        $node = node_load(arg(1));
+    }
+
+    $adback = AdBackGeneric::getInstance();
+
+    $me = $adback->getMyInfo();
+    $activation = variable_get('adback_message_activation', false);
+
+    if(is_array($me)) {
+        if(!empty($me['analytics_domain']) && !empty($me['analytics_script'])) {
+            $js = "(function (a,d){var s,t;s=d.createElement('script');s.src=a;s.async=1;t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);})('https://".$me['analytics_domain']."/".$me['analytics_script'].".js', document);";
+
+            drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => JS_THEME));
+        }
+
+        if(!empty($me['message_domain']) && !empty($me['message_script'])) {
+            if($activation) {
+                $js = "(function (a,d){var s,t,u;s=d.createElement('script');if(d.referrer){u=d.createElement('a');u.href=d.referrer;a=a+u.hostname;}s.src=a;s.async=1;t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);})('https://".$me['message_domain']."/".$me['message_script'].".js?ref=', document);";
+                drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => JS_THEME));
+            }
+        }
+    }
 }

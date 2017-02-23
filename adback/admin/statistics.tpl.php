@@ -40,9 +40,7 @@
 <div data-ab-graph data-ab-type="browser" style="width: 95%; height: 400px; margin-bottom: 50px;">
 </div>
 <hr>
-
+<br/>
 <div class="ab-discover">
     <a href="https://www.adback.co" target="_blank" class="button button-primary button-ab"><?php echo t('Discover'); ?></a>
 </div>
-<?php var_dump($GLOBALS['language']);?>
-

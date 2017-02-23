@@ -1,26 +1,82 @@
 <?php
 
+require_once('lib/AdbackGeneric.php');
 
 /**
- * Form builder to show account settings and website setting
+ * Form builder to show custom message settings
  *
  * @ingroup forms
- * @see tagcommander_admin_settings_submit()
+ * @see adback_admin_settings_submit()
+ *
+ * @param array $form
+ *
+ * @return array
  */
 function adback_admin_settings($form)
 {
+    adback_connect();
 
+    $adback = AdBackGeneric::getInstance();
+
+    if (!$adback->isConnected()) {
+
+        adback_addCommonAssets($form);
+
+        return $form;
+    }
+    $adback->updateMessageLocal();
+
+    $form['title'] = array(
+        '#markup' => t('AdBack Settings'),
+        '#prefix' => '<h3>',
+        '#suffix' => '</h3>'
+    );
+
+    $form['settings'] = array(
+        '#type' => 'fieldset',
+    );
+
+    $form['settings']['activation'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Show warning message for user with ad blocker'),
+        '#default_value' => variable_get('adback_message_activation', false),
+    );
+
+    $form['settings']['header'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Header text'),
+        '#default_value' => variable_get('adback_message_header', ''),
+        '#maxlength' => 180
+    );
+
+    $form['settings']['message'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Text message'),
+        '#default_value' => variable_get('adback_message_text', ''),
+        '#cols' => 50,
+        '#rows' => 10
+    );
+
+    $form['settings']['close'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text close button'),
+        '#default_value' => variable_get('adback_message_close', ''),
+        '#maxlength' => 180
+    );
+
+    $form['settings']['submit'] = array('#type' => 'submit', '#value' => t('Save'), '#submit' => array('adback_admin_settings_submit'));
+
+    return $form;
 }
 
-
-function connectAdback ($form, $other)
+/**
+ * Check if have access_token, and save it
+ */
+function adback_connect ()
 {
-    require_once('class-ad-back.php');
-
-    $adback = new AdBack_Generic();
+    $adback = AdBackGeneric::getInstance();
 
     if (isset($_GET['access_token'])) {
-        var_dump($form, $other);
         $adback->saveToken([
             'access_token' => $_GET['access_token'],
             'refresh_token' => '',
@@ -30,13 +86,13 @@ function connectAdback ($form, $other)
     }
 }
 
-function adback_admin_statistics($form, $other)
+/**
+ * Add common assets to form
+ *
+ * @param $form
+ */
+function adback_addCommonAssets(&$form)
 {
-    // Administrative role option.
-
-//    $form['submit'] = array('#type' => 'button', '#value' => t('Login'), '#submit' => array('adback_admin_settings_submit'));
-
-    connectAdback($form, $other);
     // Get the path to the module
     $path = drupal_get_path('module', 'adback');
     // Attach the CSS and JS to the form
@@ -67,10 +123,24 @@ function adback_admin_statistics($form, $other)
             ),
         ),
     );
+}
 
-    require_once('class-ad-back.php');
+/**
+ * Form builder to show statistics
+ *
+ * @ingroup forms
+ *
+ * @param array $form
+ *
+ * @return array
+ */
+function adback_admin_statistics($form)
+{
+    adback_connect();
 
-    $adback = new AdBack_Generic();
+    adback_addCommonAssets($form);
+
+    $adback = AdBackGeneric::getInstance();
 
     if ($adback->isConnected()) {
 
@@ -90,67 +160,44 @@ function adback_admin_statistics($form, $other)
             adbackjs.init({
                 token: \''.$adback->getToken()->access_token.'\',
                 url: \'https://'.$adback->getDomain(). '/api/\',
-                language: \'fr-FR\'
+                language: \''.$GLOBALS['language']->language.'\'
             });
         }
     }'
         );
-
-//        $form['access_token'] = $adback->getToken()->access_token;
-//        $form['domain'] = $adback->getDomain();
     }
-
-/*
-    try{
-        if (TagCommander::getInstance()->checkAccount()) {
-
-            $form['website'] = array(
-                '#type' => 'container',
-                '#title' => t('Website'),
-                '#attributes' => array('class' => array('admin-panel'))
-            );
-
-            $form['website']['title'] = array(
-                '#markup' => t('Website'),
-                '#prefix' => '<h3>',
-                '#suffix' => '</h3><hr/>'
-            );
-
-            $options = array();
-            $sites = TagCommander::getInstance()->getSites();
-            foreach ($sites as $site) {
-                $options[$site['id_site']] = utf8_encode($site['name']);
-            }
-            $form['website']['website_select'] = array(
-                '#type' => 'select',
-                '#title' => t('Website'),
-                '#default_value' => variable_get('tagcommander_website_id', 000),
-                '#options' => $options,
-                '#maxlength' => 180,
-                '#empty_option' => t('Select a website')
-            );
-
-            $form['website']['submit'] = array('#type' => 'submit', '#value' => t('Save'), '#submit' => array('tagcommander_admin_settings_submit'));
-        }
-    }catch(Exception $e)
-    {
-        drupal_set_message(t('Login or Password are invalid'), 'warning');
-    }*/
-
-//var_dump(theme('adback_login'));die;
-
-//return theme('adback_login');
 
     return $form;
 }
 
+/**
+ * To log out adback account
+ */
 function adback_admin_logout()
 {
-    require_once('class-ad-back.php');
-
-    $adback = new AdBack_Generic();
+    $adback = AdBackGeneric::getInstance();
 
     $adback->logout();
 
     drupal_json_output(array('done' => true));
+}
+
+/**
+ * Submit handler for save fields.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function adback_admin_settings_submit($form, &$form_state)
+{
+    variable_set('adback_message_activation', $form_state['values']['activation']);
+    variable_set('adback_message_header', $form_state['values']['header']);
+    variable_set('adback_message_text', $form_state['values']['message']);
+    variable_set('adback_message_close', $form_state['values']['close']);
+
+    $adback = AdBackGeneric::getInstance();
+
+    $adback->updateMessageRemote($form_state['values']['message'], $form_state['values']['header'], $form_state['values']['close']);
+
+    drupal_set_message(t('Your configuration has been saved.'));
 }
