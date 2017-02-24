@@ -1,6 +1,5 @@
 <?php
 
-
 class AdbackConnector
 {
     const ADBACK_BASE = 'https://www.adback.co/api/';

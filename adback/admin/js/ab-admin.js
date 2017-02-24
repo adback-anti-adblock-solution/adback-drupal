@@ -44,24 +44,6 @@
 			+ '&website=' + $(event.target).data('site-url');
 	}
 
-	function saveSlug() {
-		if($("#ab-select-slug-field").val() == "") return;
-
-		var data = {
-			'action': 'saveSlug',
-			'slug' :  $("#ab-select-slug-field").val()
-		}
-
-		$.post(ajaxurl, data, function(response) {
-			var obj = JSON.parse(response);
-			if(obj.done === true) {
-				window.location.reload();
-			} else {
-				sweetAlert(trans_arr.oops, trans_arr.error, "error");
-			}
-		});
-	}
-
 	function saveMessage() {
 		if($("#ab-settings-header-text").val() == "" || $("#ab-settings-close-text").val() == "" || $("#ab-settings-message").val() == "") {
 			sweetAlert(trans_arr.oops, trans_arr.all_the_fields_should_be_fill, "error");
@@ -119,10 +101,6 @@
 					loginAdback();
 				}
 			});
-		}
-
-		if($("#ab-select-slug").length>0) {
-			$("#ab-select-slug-save").click(saveSlug);
 		}
 
 		if($("#ab-settings").length>0) {
