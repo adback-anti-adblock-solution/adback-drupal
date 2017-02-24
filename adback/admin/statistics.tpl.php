@@ -41,6 +41,7 @@
 </div>
 <hr>
 <br/>
-<div class="ab-discover">
+<div class="ab-discover ab-grey">
+    <p><?php echo t('Note that you can access loads of additional statistics on your AdBack dashboard. There, you can also create automatic reports with the data you\'re interested in.') ?></p>
     <a href="https://www.adback.co" target="_blank" class="button button-primary button-ab"><?php echo t('Discover more statistics'); ?></a>
 </div>

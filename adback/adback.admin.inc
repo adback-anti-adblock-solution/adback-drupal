@@ -69,8 +69,12 @@ function adback_admin_settings($form)
     $form['container'] = array(
         '#type' => 'container',
         '#attributes' => array(
-            'class' => array('ab-discover')
+            'class' => array('ab-discover ab-grey')
         )
+    );
+
+    $form['container']['text'] = array(
+        '#markup' => '<p>' . t('Note that you can access more customization options on your AdBack dashboard (color, logo, template, theme, etc.)') . '</p>'
     );
 
     $form['container']['more'] = array(

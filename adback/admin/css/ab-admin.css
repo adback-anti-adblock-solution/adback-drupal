@@ -68,6 +68,11 @@
 	width: 100%;
 }
 
+.ab-grey{
+	background-color: #f2f2f2;
+	line-height: 1.375rem;
+}
+
 a.button.button-ab {
 	background: #54AFF6 !important;
 	margin-top: 30px !important;
@@ -84,6 +89,12 @@ a.button.button-ab {
 
 .ab-discover {
 	text-align: center;
+	padding: 10px;
+}
+
+.ab-discover p{
+	font-size: 18px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .clear {
