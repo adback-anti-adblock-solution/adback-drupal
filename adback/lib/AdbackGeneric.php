@@ -54,9 +54,9 @@ class AdBackGeneric
 
         if ($myinfo == "" || $update_time < (time() - 86400)) {
             $mysite = $this->api->getScripts();
-
-            $this->saveDomain($mysite['analytics_domain']);
-
+            if (isset($mysite['analytics_domain'])) {
+                $this->saveDomain($mysite['analytics_domain']);
+            }
         } else if ($myinfo != "") {
             $mysite = json_decode($myinfo, true);
         }
