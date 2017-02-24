@@ -68,9 +68,18 @@
 	width: 100%;
 }
 
-.button-ab {
-	background-color: #54AFF6 !important;
+a.button.button-ab {
+	background: #54AFF6 !important;
 	margin-top: 30px !important;
+	color: #FFFFFF !important;
+	margin: 18px 0 34px;
+	height: 50px;
+	border: 1px #54AFF6 solid;
+	border-radius: 0;
+	text-align: center;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 1.2rem;
+	line-height: 52px;
 }
 
 .ab-discover {

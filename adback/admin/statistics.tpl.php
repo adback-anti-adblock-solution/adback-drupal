@@ -42,5 +42,5 @@
 <hr>
 <br/>
 <div class="ab-discover">
-    <a href="https://www.adback.co" target="_blank" class="button button-primary button-ab"><?php echo t('Discover'); ?></a>
+    <a href="https://www.adback.co" target="_blank" class="button button-primary button-ab"><?php echo t('Discover more statistics'); ?></a>
 </div>

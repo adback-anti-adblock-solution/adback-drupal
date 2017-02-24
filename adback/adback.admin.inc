@@ -18,12 +18,12 @@ function adback_admin_settings($form)
 
     $adback = AdBackGeneric::getInstance();
 
+    adback_addCommonAssets($form);
+
     if (!$adback->isConnected()) {
-
-        adback_addCommonAssets($form);
-
         return $form;
     }
+
     $adback->updateMessageLocal();
 
     $form['title'] = array(
@@ -65,6 +65,26 @@ function adback_admin_settings($form)
     );
 
     $form['settings']['submit'] = array('#type' => 'submit', '#value' => t('Save'), '#submit' => array('adback_admin_settings_submit'));
+
+    $form['container'] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+            'class' => array('ab-discover')
+        )
+    );
+
+    $form['container']['more'] = array(
+        '#type' => 'link',
+        '#title' => t('Discover more features'),
+        '#href' => 'https://www.adback.co/',
+        '#attributes' => array(
+            'class' => array(
+                'button',
+                'button-primary',
+                'button-ab'
+            )
+        )
+    );
 
     return $form;
 }
