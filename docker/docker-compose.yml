@@ -17,4 +17,4 @@ drupal:
   volumes:
    - ./../adback:/var/www/html/sites/all/modules/adback
   ports:
-   - "8000:80"
+   - "8002:80"
