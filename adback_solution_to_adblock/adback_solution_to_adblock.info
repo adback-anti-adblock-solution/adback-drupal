@@ -1,0 +1,6 @@
+name = AdBack solution to adblock
+description = With AdBack, access analytics about adblocker users, address them personalized messages, propose alternative solutions to advertising (video, survey).
+core = 7.x
+files[] = adback.module
+configure = admin/config/adback
+package = AdBack

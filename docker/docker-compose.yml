@@ -1,4 +1,4 @@
-adback_db:
+drupal_db:
   image: mysql:5.7
   volumes:
    - ./db_data:/var/lib/mysql
@@ -12,7 +12,9 @@ adback_db:
 
 drupal:
   links:
-   - adback_db
-  image: drupal:latest
+   - drupal_db
+  image: drupal:7
+  volumes:
+   - ./../adback_solution_to_adblock:/var/www/html/sites/all/modules/adback_solution_to_adblock
   ports:
-   - "80:80"
+   - "8002:80"
