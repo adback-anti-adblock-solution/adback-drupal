@@ -15,6 +15,6 @@ drupal:
    - drupal_db
   image: drupal:7
   volumes:
-   - ./../adback:/var/www/html/sites/all/modules/adback
+   - ./../adback_solution_to_adblock:/var/www/html/sites/all/modules/adback_solution_to_adblock
   ports:
    - "8002:80"
