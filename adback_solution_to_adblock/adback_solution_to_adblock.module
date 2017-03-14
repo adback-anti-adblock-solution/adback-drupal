@@ -136,7 +136,7 @@ function adback_solution_to_adblock_preprocess_page(&$variables)
 
     if (!empty($me['message_domain']) && !empty($me['message_script'])) {
       if ($activation) {
-        $js = "(function (a,d){var s,t,u;s=d.createElement('script');if(d.referrer){u=d.createElement('a');u.href=d.referrer;a=a+u.hostname;}s.src=a;s.async=1;t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);})('https://" . $me['message_domain'] . "/" . $me['message_script'] . ".js?ref=', document);";
+        $js = "(function (a,d){var s,t,u;s=d.createElement('script');s.src=a;s.async=1;t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);})('https://" . $me['message_domain'] . "/" . $me['message_script'] . ".js', document);";
         drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => JS_THEME));
       }
     }
