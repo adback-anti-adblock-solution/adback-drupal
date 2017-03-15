@@ -1,7 +1,9 @@
 <?php
 
 /**
- * @file AdbackSolutionToAdblockGeneric.php
+ * @file
+ * The generic class.
+ *
  * The admin-specific functionality of the plugin.
  *
  * @class AdbackSolutionToAdblockGeneric
@@ -33,10 +35,10 @@ class AdbackSolutionToAdblockGeneric {
   }
 
   /**
-   * +
    * Use singleton pattern.
    *
-   * @return AdbackSolutionToAdblockGeneric|null
+   * @return AdbackSolutionToAdblockGeneric
+   *   The instance of AdbackSolutionToAdblockGeneric
    */
   static public function getInstance() {
 
@@ -50,14 +52,15 @@ class AdbackSolutionToAdblockGeneric {
   /**
    * Get info from adback site.
    *
-   * @return mixed|string
+   * @return array|bool
+   *   Array with all domains.
    */
   public function getMyInfo() {
 
     $myinfo = variable_get('adback_solution_to_adblock_myinfo', '');
     $update_time = variable_get('adback_solution_to_adblock_update_time', 0);
 
-    $mysite = '';
+    $mysite = FALSE;
     if ($myinfo == "" || $update_time < (time() - 86400)) {
       $mysite = $this->api->getScripts();
       if (isset($mysite['analytics_domain'])) {
@@ -78,9 +81,18 @@ class AdbackSolutionToAdblockGeneric {
 
     $message = $this->api->getMessages();
 
-    variable_set('adback_solution_to_adblock_message_header', $message['custom_messages'][0]['header_text']);
-    variable_set('adback_solution_to_adblock_message_text', $message['custom_messages'][0]['message']);
-    variable_set('adback_solution_to_adblock_message_close', $message['custom_messages'][0]['close_text']);
+    variable_set(
+      'adback_solution_to_adblock_message_header',
+      $message['custom_messages'][0]['header_text']
+    );
+    variable_set(
+      'adback_solution_to_adblock_message_text',
+      $message['custom_messages'][0]['message']
+    );
+    variable_set(
+      'adback_solution_to_adblock_message_close',
+      $message['custom_messages'][0]['close_text']
+    );
     $link = $message['custom_messages'][0]['links']['_self'];
     preg_match('/[0-9]+$/', $link, $elements);
     $id = $elements[0];
@@ -90,11 +102,15 @@ class AdbackSolutionToAdblockGeneric {
   /**
    * Update via adback api with message.
    *
-   * @param $text
-   * @param $header
-   * @param $close
+   * @param string $text
+   *   The main text of custom message.
+   * @param string $header
+   *   The head title of custom message.
+   * @param string $close
+   *   The close message of the cutom message.
    *
    * @return mixed|string
+   *   The response of the request
    */
   public function updateMessageRemote($text, $header, $close) {
 
@@ -112,8 +128,10 @@ class AdbackSolutionToAdblockGeneric {
    * Check if the token is valid.
    *
    * @param object $token
+   *   The token.
    *
    * @return bool
+   *   If the user is connected
    */
   public function isConnected($token = NULL) {
 
@@ -134,16 +152,21 @@ class AdbackSolutionToAdblockGeneric {
    * Return token object stored.
    *
    * @return object
+   *   The token object
    */
   public function getToken() {
 
-    return (object) ['access_token' => variable_get('adback_solution_to_adblock_access_token', ''), 'refresh_token' => variable_get('adback_solution_to_adblock_refresh_token', '')];
+    return (object) [
+      'access_token' => variable_get('adback_solution_to_adblock_access_token', ''),
+      'refresh_token' => variable_get('adback_solution_to_adblock_refresh_token', ''),
+    ];
   }
 
   /**
    * Save tokens into db.
    *
-   * @param $token
+   * @param array|null $token
+   *   All tokens.
    */
   public function saveToken($token) {
 
@@ -151,8 +174,14 @@ class AdbackSolutionToAdblockGeneric {
       return;
     }
 
-    variable_set('adback_solution_to_adblock_access_token', $token["access_token"]);
-    variable_set('adback_solution_to_adblock_refresh_token', $token["refresh_token"]);
+    variable_set(
+      'adback_solution_to_adblock_access_token',
+      $token["access_token"]
+    );
+    variable_set(
+      'adback_solution_to_adblock_refresh_token',
+      $token["refresh_token"]
+    );
 
     $this->api->setToken($token["access_token"]);
 
@@ -172,6 +201,7 @@ class AdbackSolutionToAdblockGeneric {
    * Get all scripts.
    *
    * @return mixed|string
+   *   Get all script from the api
    */
   public function askScripts() {
 
@@ -181,7 +211,8 @@ class AdbackSolutionToAdblockGeneric {
   /**
    * Store the current domain.
    *
-   * @param $domain
+   * @param string $domain
+   *   The new domain.
    */
   public function saveDomain($domain) {
 
@@ -193,6 +224,7 @@ class AdbackSolutionToAdblockGeneric {
    * Get the stored domain.
    *
    * @return mixed
+   *   The stored domain
    */
   public function getDomain() {
 
