@@ -1,17 +1,19 @@
 <?php
 
 /**
- * @file AdbackSolutionToAdblockConnector.php
+ * @file
+ * Connector for adback api.
  *
- * @class AdbackSolutionToAdblockConnector
- * Class AdbackSolutionToAdblockConnector
+ * Class AdbackSolutionToAdblockConnector connector for adback api.
  *
  * @package AdbackSolutionToAdblock
  * @subpackage AdbackSolutionToAdblock
  */
 
 /**
+ * Class AdbackSolutionToAdblockConnector.
  *
+ * @class AdbackSolutionToAdblockConnector
  */
 class AdbackSolutionToAdblockConnector {
   const ADBACK_BASE = 'https://www.adback.co/api/';
@@ -22,23 +24,35 @@ class AdbackSolutionToAdblockConnector {
    * AdbackSolutionToAdblockConnector constructor.
    *
    * @param string $token
+   *   The token.
    */
   public function __construct($token = NULL) {
     $this->token = $token;
   }
 
   /**
-   * @param $endpoint
+   * Get the url.
+   *
+   * @param string $endpoint
+   *   Api endpoint.
+   *
    * @return string
+   *   The url
    */
   protected function getUrl($endpoint) {
     return self::ADBACK_BASE . $endpoint . '?access_token=' . $this->token;
   }
 
   /**
-   * @param $endpoint
+   * Get the api's response from the endpoint and parse the response.
+   *
+   * @param string $endpoint
+   *   The api endpoint.
    * @param string $format
+   *   Return format.
+   *
    * @return mixed
+   *   Datas.
    */
   public function get($endpoint, $format = NULL) {
     if ($this->token === NULL) {
@@ -69,12 +83,19 @@ class AdbackSolutionToAdblockConnector {
   }
 
   /**
-   * @param $endpoint
-   * @param $fields
+   * Post to the api endpoint all fields.
+   *
+   * @param string $endpoint
+   *   API endpoint.
+   * @param array $fields
+   *   Fields of the custom message.
    * @param array $header
-   * @return bool|mixed|string
+   *   Specify header.
+   *
+   * @return mixed
+   *   The response of request
    */
-  public function post($endpoint, $fields, $header = array()) {
+  public function post($endpoint, array $fields, array $header = array()) {
     if ($this->token === NULL) {
       return FALSE;
     }
@@ -131,7 +152,10 @@ class AdbackSolutionToAdblockConnector {
   }
 
   /**
-   * @param null $token
+   * Set a new token.
+   *
+   * @param string $token
+   *   The new token.
    */
   public function setToken($token) {
     $this->token = $token;

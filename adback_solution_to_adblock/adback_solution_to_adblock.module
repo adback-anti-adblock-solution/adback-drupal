@@ -1,14 +1,19 @@
 <?php
+
 /**
- * @file adback_solution_to_adblock.module
+ * @file
+ * The main module.
+ *
+ * The main file of adback module.
  */
+
 require_once 'lib/AdbackSolutionToAdblockGeneric.php';
 
 /**
  * Implements hook_permission().
  */
-function adback_solution_to_adblock_permission()
-{
+function adback_solution_to_adblock_permission() {
+
   $permissions = array(
     'administer adback' => array(
       'title' => t('Administrate AdBack module'),
@@ -21,8 +26,8 @@ function adback_solution_to_adblock_permission()
 /**
  * Implements hook_menu().
  */
-function adback_solution_to_adblock_menu()
-{
+function adback_solution_to_adblock_menu() {
+
   // Administration pages.
   $items['admin/config/adback'] = array(
     'title' => 'AdBack',
@@ -35,7 +40,7 @@ function adback_solution_to_adblock_menu()
     'file path' => drupal_get_path('module', 'system'),
   );
   $items['admin/config/adback/statistics'] = array(
-    'title' => t('Statistics'),
+    'title' => 'Statistics',
     'description' => 'Show Adback Statistics',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('adback_solution_to_adblock_admin_statistics'),
@@ -44,7 +49,7 @@ function adback_solution_to_adblock_menu()
     'weight' => -20,
   );
   $items['admin/config/adback/settings'] = array(
-    'title' => t('Settings'),
+    'title' => 'Settings',
     'description' => 'Configure AdBack message.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('adback_solution_to_adblock_admin_settings'),
@@ -53,11 +58,11 @@ function adback_solution_to_adblock_menu()
     'weight' => -10,
   );
   $items['admin/config/adback/logout'] = array(
-    'title' => t('logout'),
+    'title' => 'logout',
     'page callback' => 'adback_solution_to_adblock_admin_logout',
     'access arguments' => array('administer adback'),
     'file' => 'adback_solution_to_adblock.admin.inc',
-    'type' => MENU_CALLBACK
+    'type' => MENU_CALLBACK,
   );
 
   return $items;
@@ -66,8 +71,8 @@ function adback_solution_to_adblock_menu()
 /**
  * Implements hook_theme().
  */
-function adback_solution_to_adblock_theme()
-{
+function adback_solution_to_adblock_theme() {
+
   return array(
     'adback_solution_to_adblock_admin_login' => array(
       'render element' => 'form',
@@ -84,14 +89,10 @@ function adback_solution_to_adblock_theme()
 
 /**
  * Implements hook_form_alter().
- *
- * @param $form
- * @param $form_state
- * @param $form_id
  */
-function adback_solution_to_adblock_form_alter(&$form, &$form_state, $form_id)
-{
-  if (strpos($form_id, 'adback_') === false) {
+function adback_solution_to_adblock_form_alter(&$form, &$form_state, $form_id) {
+
+  if (strpos($form_id, 'adback_') === FALSE) {
     return;
   }
 
@@ -102,18 +103,17 @@ function adback_solution_to_adblock_form_alter(&$form, &$form_state, $form_id)
       $adback->askDomain();
     }
 
-  } else {
+  }
+  else {
     $form['#theme'] = array('adback_solution_to_adblock_admin_login');
   }
 }
 
 /**
  * Implements hook_preprocess_html().
- *
- * @param $variables
  */
-function adback_solution_to_adblock_preprocess_page(&$variables)
-{
+function adback_solution_to_adblock_preprocess_page(&$variables) {
+
   if (FALSE === is_array($variables)) {
     return;
   }
@@ -125,19 +125,27 @@ function adback_solution_to_adblock_preprocess_page(&$variables)
   $adback = AdbackSolutionToAdblockGeneric::getInstance();
 
   $me = $adback->getMyInfo();
-  $activation = variable_get('adback_solution_to_adblock_message_activation', false);
+  $activation = variable_get('adback_solution_to_adblock_message_activation', FALSE);
 
   if (is_array($me)) {
     if (!empty($me['analytics_domain']) && !empty($me['analytics_script'])) {
       $js = "(function (a,d){var s,t;s=d.createElement('script');s.src=a;s.async=1;t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);})('https://" . $me['analytics_domain'] . "/" . $me['analytics_script'] . ".js', document);";
 
-      drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => JS_THEME));
+      drupal_add_js($js, array(
+        'type' => 'inline',
+        'scope' => 'footer',
+        'weight' => JS_THEME,
+      ));
     }
 
     if (!empty($me['message_domain']) && !empty($me['message_script'])) {
       if ($activation) {
         $js = "(function (a,d){var s,t,u;s=d.createElement('script');s.src=a;s.async=1;t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);})('https://" . $me['message_domain'] . "/" . $me['message_script'] . ".js', document);";
-        drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => JS_THEME));
+        drupal_add_js($js, array(
+          'type' => 'inline',
+          'scope' => 'footer',
+          'weight' => JS_THEME,
+        ));
       }
     }
   }

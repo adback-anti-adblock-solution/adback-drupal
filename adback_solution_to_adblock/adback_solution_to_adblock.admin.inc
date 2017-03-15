@@ -2,6 +2,9 @@
 
 /**
  * @file
+ * Admin interfaces.
+ *
+ * Add admin interfaces.
  */
 
 require_once 'lib/AdbackSolutionToAdblockGeneric.php';
@@ -9,20 +12,19 @@ require_once 'lib/AdbackSolutionToAdblockGeneric.php';
 /**
  * Form builder to show custom message settings.
  *
- * @ingroup forms
- * @see adback_solution_to_adblock_admin_settings_submit()
- *
  * @param array $form
+ *   It's the Form.
  *
  * @return array
+ *   The form.
  */
-function adback_solution_to_adblock_admin_settings($form) {
+function adback_solution_to_adblock_admin_settings(array $form) {
 
   adback_solution_to_adblock_connect();
 
   $adback = AdbackSolutionToAdblockGeneric::getInstance();
 
-  adback_solution_to_adblock_addCommonAssets($form);
+  adback_solution_to_adblock_add_common_assets($form);
 
   if (!$adback->isConnected()) {
     return $form;
@@ -68,7 +70,11 @@ function adback_solution_to_adblock_admin_settings($form) {
     '#maxlength' => 180,
   );
 
-  $form['settings']['submit'] = array('#type' => 'submit', '#value' => t('Save'), '#submit' => array('adback_solution_to_adblock_admin_settings_submit'));
+  $form['settings']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#submit' => array('adback_solution_to_adblock_admin_settings_submit'),
+  );
 
   $form['container'] = array(
     '#type' => 'container',
@@ -117,9 +123,10 @@ function adback_solution_to_adblock_connect() {
 /**
  * Add common assets to form.
  *
- * @param $form
+ * @param array $form
+ *   The Form.
  */
-function adback_solution_to_adblock_addCommonAssets(&$form) {
+function adback_solution_to_adblock_add_common_assets(array &$form) {
 
   // Get the path to the module.
   $path = drupal_get_path('module', 'adback_solution_to_adblock');
@@ -130,19 +137,11 @@ function adback_solution_to_adblock_addCommonAssets(&$form) {
         'type' => 'file',
         'data' => $path . '/admin/css/ab-admin.css',
       ),
-      array(
-        'type' => 'file',
-        'data' => $path . '/admin/css/sweetalert2.min.css',
-      ),
     ),
     'js' => array(
       array(
         'type' => 'file',
         'data' => $path . '/admin/js/ab-admin.js',
-      ),
-      array(
-        'type' => 'file',
-        'data' => $path . '/admin/js/sweetalert2.min.js',
       ),
     ),
   );
@@ -151,17 +150,17 @@ function adback_solution_to_adblock_addCommonAssets(&$form) {
 /**
  * Form builder to show statistics.
  *
- * @ingroup forms
- *
  * @param array $form
+ *   The form.
  *
  * @return array
+ *   The form.
  */
-function adback_solution_to_adblock_admin_statistics($form) {
+function adback_solution_to_adblock_admin_statistics(array $form) {
 
   adback_solution_to_adblock_connect();
 
-  adback_solution_to_adblock_addCommonAssets($form);
+  adback_solution_to_adblock_add_common_assets($form);
 
   $adback = AdbackSolutionToAdblockGeneric::getInstance();
 
@@ -207,19 +206,37 @@ function adback_solution_to_adblock_admin_logout() {
 /**
  * Submit handler for save fields.
  *
- * @param $form
- * @param $form_state
+ * @param array $form
+ *   The Form.
+ * @param array $form_state
+ *   The Form state.
  */
-function adback_solution_to_adblock_admin_settings_submit($form, &$form_state) {
+function adback_solution_to_adblock_admin_settings_submit(array $form, array &$form_state) {
 
-  variable_set('adback_solution_to_adblock_message_activation', $form_state['values']['activation']);
-  variable_set('adback_solution_to_adblock_message_header', $form_state['values']['header']);
-  variable_set('adback_solution_to_adblock_message_text', $form_state['values']['message']);
-  variable_set('adback_solution_to_adblock_message_close', $form_state['values']['close']);
+  variable_set(
+    'adback_solution_to_adblock_message_activation',
+    $form_state['values']['activation']
+  );
+  variable_set(
+    'adback_solution_to_adblock_message_header',
+    $form_state['values']['header']
+  );
+  variable_set(
+    'adback_solution_to_adblock_message_text',
+    $form_state['values']['message']
+  );
+  variable_set(
+    'adback_solution_to_adblock_message_close',
+    $form_state['values']['close']
+  );
 
   $adback = AdbackSolutionToAdblockGeneric::getInstance();
 
-  $adback->updateMessageRemote($form_state['values']['message'], $form_state['values']['header'], $form_state['values']['close']);
+  $adback->updateMessageRemote(
+    $form_state['values']['message'],
+    $form_state['values']['header'],
+    $form_state['values']['close']
+  );
 
   drupal_set_message(t('Your configuration has been saved.'));
 }
