@@ -100,17 +100,9 @@ class AdbackSolutionToAdblockConnector {
       return FALSE;
     }
 
-    $fields_string = '';
-    $header[] = 'Content-Type: application/x-www-form-urlencoded';
+    $header[] = 'Content-Type: application/json';
     $url = $this->getUrl($endpoint);
     if (function_exists('curl_version')) {
-      if (is_array($fields)) {
-        // url-ify the data for the POST.
-        foreach ($fields as $key => $value) {
-          $fields_string .= $key . '=' . urlencode($value) . '&';
-        }
-        rtrim($fields_string, '&');
-      }
 
       // Open connection.
       $ch = curl_init();
@@ -119,7 +111,7 @@ class AdbackSolutionToAdblockConnector {
       curl_setopt($ch, CURLOPT_URL, $url);
       if (is_array($fields)) {
         curl_setopt($ch, CURLOPT_POST, count($fields));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
       }
       else {
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -141,7 +133,7 @@ class AdbackSolutionToAdblockConnector {
         'http' => array(
           'header' => implode("\r\n", $header),
           'method' => 'POST',
-          'content' => is_array($fields) ? http_build_query($fields) : $fields,
+          'content' => is_array($fields) ? json_encode($fields) : $fields,
         ),
       );
       $context = stream_context_create($options);

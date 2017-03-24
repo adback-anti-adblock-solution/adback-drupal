@@ -8,7 +8,7 @@ drupal_db:
    MYSQL_USER: drupal
    MYSQL_PASSWORD: drupal
   ports:
-   - "3308:3306"
+   - "3309:3306"
 
 drupal:
   links:
