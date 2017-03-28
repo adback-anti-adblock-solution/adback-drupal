@@ -238,5 +238,7 @@ function adback_solution_to_adblock_admin_settings_submit(array $form, array &$f
     $form_state['values']['close']
   );
 
+  $adback->updateMessageDisplay((bool) $form_state['values']['activation']);
+
   drupal_set_message(t('Your configuration has been saved.'));
 }

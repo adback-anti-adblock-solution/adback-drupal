@@ -96,13 +96,24 @@ class AdbackSolutionToAdblockApi {
    *   Return the code of the request
    */
   public function setMessage(array $message, $id) {
-    $headers = array(
-      "Content-Type: application/json",
-    );
-
     $url = "custom-message/" . $id;
 
-    return $this->connector->post($url, json_encode($message), $headers);
+    return $this->connector->post($url, $message);
+  }
+
+  /**
+   * Send the settings of the custom message.
+   *
+   * @param array $message
+   *   Custom message settings.
+   *
+   * @return mixed
+   *   Return the code of the request
+   */
+  public function setMessageDisplay(array $message) {
+    $url = "custom-message/update-status";
+
+    return $this->connector->post($url, $message);
   }
 
   /**

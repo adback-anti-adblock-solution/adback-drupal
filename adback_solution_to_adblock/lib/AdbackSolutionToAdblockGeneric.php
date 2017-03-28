@@ -125,6 +125,23 @@ class AdbackSolutionToAdblockGeneric {
   }
 
   /**
+   * Update via adback api with message.
+   *
+   * @param bool $display
+   *   The status of the message.
+   *
+   * @return mixed|string
+   *   The response of the request
+   */
+  public function updateMessageDisplay($display) {
+    $fields = array(
+      "display" => $display
+    );
+
+    return $this->api->setMessageDisplay($fields);
+  }
+
+  /**
    * Check if the token is valid.
    *
    * @param object $token
