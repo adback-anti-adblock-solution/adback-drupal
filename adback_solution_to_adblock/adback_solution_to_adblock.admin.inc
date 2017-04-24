@@ -25,6 +25,7 @@ function adback_solution_to_adblock_admin_settings(array $form) {
   $adback = AdbackSolutionToAdblockGeneric::getInstance();
 
   adback_solution_to_adblock_add_common_assets($form);
+  adback_solution_to_adblock_display_incenteev();
 
   if (!$adback->isConnected()) {
     return $form;
@@ -61,6 +62,7 @@ function adback_solution_to_adblock_admin_message(array $form) {
   $adback = AdbackSolutionToAdblockGeneric::getInstance();
 
   adback_solution_to_adblock_add_common_assets($form);
+  adback_solution_to_adblock_display_incenteev();
 
   if (!$adback->isConnected()) {
     return $form;
@@ -178,6 +180,17 @@ function adback_solution_to_adblock_add_common_assets(array &$form) {
 }
 
 /**
+ * Display incenteev message after plugin installation
+ */
+function adback_solution_to_adblock_display_incenteev() {
+  $time = time();
+  if ($time > variable_get('adback_solution_to_adblock_incenteev_display', $time) && false === variable_get('adback_solution_to_adblock_message_activation', false)) {
+    drupal_set_message(t('It\'s time to get in touch with your adblock users, activate your adback custom message !'));
+    variable_del('adback_solution_to_adblock_incenteev_display');
+  }
+}
+
+/**
  * Form builder to show statistics.
  *
  * @param array $form
@@ -191,6 +204,7 @@ function adback_solution_to_adblock_admin_statistics(array $form) {
   adback_solution_to_adblock_connect();
 
   adback_solution_to_adblock_add_common_assets($form);
+  adback_solution_to_adblock_display_incenteev();
 
   $adback = AdbackSolutionToAdblockGeneric::getInstance();
 

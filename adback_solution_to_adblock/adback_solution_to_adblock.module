@@ -29,6 +29,8 @@ function adback_solution_to_adblock_permission() {
 function adback_solution_to_adblock_enable() {
     $api = new AdbackSolutionToAdblockApi();
     $api->registerUser(check_plain(variable_get('site_mail', ini_get('sendmail_from'))), $GLOBALS['base_url']);
+    $time = time() + 8*24*60;
+    variable_set('adback_solution_to_adblock_incenteev_display', $time);
 }
 
 /**
