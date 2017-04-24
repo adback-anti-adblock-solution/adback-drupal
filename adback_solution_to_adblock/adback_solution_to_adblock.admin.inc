@@ -33,71 +33,13 @@ function adback_solution_to_adblock_admin_settings(array $form) {
   $adback->updateMessageLocal();
 
   $form['title'] = array(
-    '#markup' => t('AdBack Settings'),
+    '#markup' => t('AdBack Account'),
     '#prefix' => '<h3>',
     '#suffix' => '</h3>',
   );
 
-  $form['settings'] = array(
-    '#type' => 'fieldset',
-  );
-
-  $form['settings']['activation'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Activate your message'),
-    '#default_value' => variable_get('adback_solution_to_adblock_message_activation', FALSE),
-  );
-
-  $form['settings']['header'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Header text'),
-    '#default_value' => variable_get('adback_solution_to_adblock_message_header', ''),
-    '#maxlength' => 180,
-  );
-
-  $form['settings']['message'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Text message'),
-    '#default_value' => variable_get('adback_solution_to_adblock_message_text', ''),
-    '#cols' => 50,
-    '#rows' => 10,
-  );
-
-  $form['settings']['close'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Text close button'),
-    '#default_value' => variable_get('adback_solution_to_adblock_message_close', ''),
-    '#maxlength' => 180,
-  );
-
-  $form['settings']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save'),
-    '#submit' => array('adback_solution_to_adblock_admin_settings_submit'),
-  );
-
-  $form['container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array('ab-discover ab-grey'),
-    ),
-  );
-
-  $form['container']['text'] = array(
-    '#markup' => '<p>' . t('Note that you can access more customization options on your AdBack dashboard (color, logo, template, theme, etc.)') . '</p>',
-  );
-
-  $form['container']['more'] = array(
-    '#type' => 'link',
-    '#title' => t('Discover more features'),
-    '#href' => 'https://www.adback.co/',
-    '#attributes' => array(
-      'class' => array(
-        'button',
-        'button-primary',
-        'button-ab',
-      ),
-    ),
+  $form['container']['logout'] = array(
+    '#markup' => '<button id="ab-logout" class="button button-primary">' . t('Log out') . '</button>',
   );
 
   return $form;
@@ -289,46 +231,6 @@ function adback_solution_to_adblock_admin_logout() {
   $adback->logout();
 
   drupal_json_output(array('done' => TRUE));
-}
-
-/**
- * Submit handler for save fields.
- *
- * @param array $form
- *   The Form.
- * @param array $form_state
- *   The Form state.
- */
-function adback_solution_to_adblock_admin_settings_submit(array $form, array &$form_state) {
-
-  variable_set(
-    'adback_solution_to_adblock_message_activation',
-    $form_state['values']['activation']
-  );
-  variable_set(
-    'adback_solution_to_adblock_message_header',
-    $form_state['values']['header']
-  );
-  variable_set(
-    'adback_solution_to_adblock_message_text',
-    $form_state['values']['message']
-  );
-  variable_set(
-    'adback_solution_to_adblock_message_close',
-    $form_state['values']['close']
-  );
-
-  $adback = AdbackSolutionToAdblockGeneric::getInstance();
-
-  $adback->updateMessageRemote(
-    $form_state['values']['message'],
-    $form_state['values']['header'],
-    $form_state['values']['close']
-  );
-
-  $adback->updateMessageDisplay((bool) $form_state['values']['activation']);
-
-  drupal_set_message(t('Your configuration has been saved.'));
 }
 
 /**

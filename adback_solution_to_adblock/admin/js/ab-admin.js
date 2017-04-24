@@ -61,7 +61,7 @@
   }
 
   $(document).ready(function () {
-    if ($('[data-ab-type]').length > 0) {
+    if ($('#ab-logout').length > 0) {
       $('#ab-logout').click(_logout);
     }
 

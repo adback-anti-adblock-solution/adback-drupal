@@ -16,7 +16,6 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <h1 class="ab-lefty"><?php echo t('AdBack : The stats of your AdBlock audience'); ?></h1>
-<button id="ab-logout" class="button button-primary"><?php echo t('Log out'); ?></button>
 <hr class="clear">
 
 <h2><?php echo t('Blocked page view and percent'); ?></h2>
