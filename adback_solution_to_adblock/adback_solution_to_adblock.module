@@ -24,6 +24,14 @@ function adback_solution_to_adblock_permission() {
 }
 
 /**
+ * Implements hook_enable()
+ */
+function adback_solution_to_adblock_enable() {
+    $api = new AdbackSolutionToAdblockApi();
+    $api->registerUser(check_plain(variable_get('site_mail', ini_get('sendmail_from'))), $GLOBALS['base_url']);
+}
+
+/**
  * Implements hook_menu().
  */
 function adback_solution_to_adblock_menu() {
@@ -68,7 +76,7 @@ function adback_solution_to_adblock_menu() {
   );
   $items['admin/config/adback/logout'] = array(
     'title' => 'logout',
-    'page callback' => 'adback_solution_to_adblock_admin_logout',
+    'page callback' => ' adback_solution_to_adblock_admin_logout',
     'access arguments' => array('administer adback'),
     'file' => 'adback_solution_to_adblock.admin.inc',
     'type' => MENU_CALLBACK,

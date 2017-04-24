@@ -258,5 +258,4 @@ class AdbackSolutionToAdblockGeneric {
     variable_del('adback_solution_to_adblock_access_token');
     variable_del('adback_solution_to_adblock_refresh_token');
   }
-
 }

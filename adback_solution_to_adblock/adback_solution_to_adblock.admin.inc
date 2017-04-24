@@ -119,15 +119,15 @@ function adback_solution_to_adblock_admin_message(array $form) {
   );
 
   $form['container']['last'] = array(
-      '#markup' => '<div><a href="https://www.adback.co/en/monitoring/custom" target="_blank">' . theme(
-        'image',
-        array(
-          'path' => $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'adback_solution_to_adblock') . '/admin/images/custom_message.png',
-          'attributes' => array(
-            'style' => 'max-width: 710px;width: 100%;',
-          )
+    '#markup' => '<div><a href="https://www.adback.co/en/monitoring/custom" target="_blank">' . theme(
+      'image',
+      array(
+        'path' => $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'adback_solution_to_adblock') . '/admin/images/custom_message.png',
+        'attributes' => array(
+          'style' => 'max-width: 710px;width: 100%;',
         )
-      ) . '</a></div>',
+      )
+    ) . '</a></div>',
   );
 
   return $form;

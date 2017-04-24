@@ -16,7 +16,7 @@
  * @class AdbackSolutionToAdblockConnector
  */
 class AdbackSolutionToAdblockConnector {
-  const ADBACK_BASE = 'https://www.adback.co/api/';
+  const ADBACK_BASE = 'https://www.adback.co/';
 
   protected $token;
 
@@ -39,8 +39,8 @@ class AdbackSolutionToAdblockConnector {
    * @return string
    *   The url
    */
-  protected function getUrl($endpoint) {
-    return self::ADBACK_BASE . $endpoint . '?access_token=' . $this->token;
+  protected function getUri($endpoint) {
+    return $endpoint . '?access_token=' . $this->token;
   }
 
   /**
@@ -59,7 +59,8 @@ class AdbackSolutionToAdblockConnector {
       return FALSE;
     }
 
-    $url = $this->getUrl($endpoint);
+    $uri = $this->getUri($endpoint);
+    $url = self::ADBACK_BASE . $uri;
     if (function_exists('curl_version')) {
       $curl = curl_init($url);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -96,12 +97,8 @@ class AdbackSolutionToAdblockConnector {
    *   The response of request
    */
   public function post($endpoint, array $fields, array $header = array()) {
-    if ($this->token === NULL) {
-      return FALSE;
-    }
-
+    $url = self::ADBACK_BASE . $endpoint;
     $header[] = 'Content-Type: application/json';
-    $url = $this->getUrl($endpoint);
     if (function_exists('curl_version')) {
 
       // Open connection.
@@ -144,6 +141,29 @@ class AdbackSolutionToAdblockConnector {
   }
 
   /**
+   * Post to the api endpoint all fields.
+   *
+   * @param string $endpoint
+   *   API endpoint.
+   * @param array $fields
+   *   Fields of the custom message.
+   * @param array $header
+   *   Specify header.
+   *
+   * @return mixed
+   *   The response of request
+   */
+  public function postWithToken($endpoint, array $fields, array $header = array()) {
+    if ($this->token === NULL) {
+      return FALSE;
+    }
+
+    $uri = $this->getUri($endpoint);
+
+    return $this->post($uri, $fields, $header);
+  }
+
+  /**
    * Set a new token.
    *
    * @param string $token
@@ -152,5 +172,4 @@ class AdbackSolutionToAdblockConnector {
   public function setToken($token) {
     $this->token = $token;
   }
-
 }

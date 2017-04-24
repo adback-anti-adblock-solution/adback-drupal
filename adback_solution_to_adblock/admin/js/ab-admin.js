@@ -43,9 +43,9 @@
     $('#ab-register-adback').attr('disabled', true);
     var callback = encodeURI(window.location.href);
     window.location.href = 'https://www.adback.co/en/register/?redirect_url='
-        + callback
-        + '&email=' + $(event.target).data('email')
-        + '&website=' + $(event.target).data('site-url');
+      + callback
+      + '&email=' + $(event.target).data('email')
+      + '&website=' + $(event.target).data('site-url');
   }
 
   function _logout() {
