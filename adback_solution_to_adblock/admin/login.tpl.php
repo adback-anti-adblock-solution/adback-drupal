@@ -22,18 +22,18 @@
             <center><a href="https://www.adback.co" target="_blank"><div class="ab-login-logo" style="background-image:url('<?php echo $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'adback_solution_to_adblock'); ?>/admin/images/_dback.png');"></div></a></center>
             <span class="ab-login-envato-desc"><?php echo t('If you are a subscriber of AdBack.co, The usage of the plugins is free, click below to identify yourself:'); ?></span>
             <center>
-                <button class="button button-primary" id="ab-login-adback" style="width:100%;margin-top: 30px;"><?php echo t('Activate my AdBack account'); ?></button>
-            </center>
-            <center>
                 <button
-                    class="button button-primary"
-                    id="ab-register-adback"
-                    style="width:100%;margin-top: 30px;"
-                    data-site-url="<?php echo $GLOBALS['base_url'] ?>"
-                    data-email="<?php echo check_plain(variable_get('site_mail', ini_get('sendmail_from')));?>"
+                        class="button button-primary"
+                        id="ab-register-adback"
+                        style="width:100%;margin-top: 30px;background-color:#0085ba;color:white;"
+                        data-site-url="<?php echo $GLOBALS['base_url'] ?>"
+                        data-email="<?php echo check_plain(variable_get('site_mail', ini_get('sendmail_from')));?>"
                 >
                     <?php echo t('Create my AdBack account'); ?>
                 </button>
+            </center>
+            <center>
+                <button class="button button-primary" id="ab-login-adback" style="width:100%;margin-top: 30px;"><?php echo t('Activate my AdBack account'); ?></button>
             </center>
         </div>
     </div>
