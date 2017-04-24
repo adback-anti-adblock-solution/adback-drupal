@@ -78,7 +78,7 @@ function adback_solution_to_adblock_menu() {
   );
   $items['admin/config/adback/logout'] = array(
     'title' => 'logout',
-    'page callback' => ' adback_solution_to_adblock_admin_logout',
+    'page callback' => 'adback_solution_to_adblock_admin_logout',
     'access arguments' => array('administer adback'),
     'file' => 'adback_solution_to_adblock.admin.inc',
     'type' => MENU_CALLBACK,
