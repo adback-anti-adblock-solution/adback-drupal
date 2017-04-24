@@ -23,9 +23,9 @@
             <span class="ab-login-envato-desc"><?php echo t('If you are a subscriber of AdBack.co, The usage of the plugins is free, click below to identify yourself:'); ?></span>
             <center>
                 <button
-                        class="button button-primary"
+                        class="button button-primary button-ab"
                         id="ab-register-adback"
-                        style="width:100%;margin-top: 30px;background-color:#0085ba;color:white;"
+                        style="width:100%;margin-top: 30px"
                         data-site-url="<?php echo $GLOBALS['base_url'] ?>"
                         data-email="<?php echo check_plain(variable_get('site_mail', ini_get('sendmail_from')));?>"
                 >

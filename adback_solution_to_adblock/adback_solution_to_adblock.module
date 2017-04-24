@@ -46,11 +46,20 @@ function adback_solution_to_adblock_menu() {
     'page arguments' => array('adback_solution_to_adblock_admin_statistics'),
     'access arguments' => array('administer adback'),
     'file' => 'adback_solution_to_adblock.admin.inc',
+    'weight' => -30,
+  );
+  $items['admin/config/adback/message'] = array(
+    'title' => 'Message',
+    'description' => 'Configure AdBack message.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('adback_solution_to_adblock_admin_message'),
+    'access arguments' => array('administer adback'),
+    'file' => 'adback_solution_to_adblock.admin.inc',
     'weight' => -20,
   );
   $items['admin/config/adback/settings'] = array(
     'title' => 'Settings',
-    'description' => 'Configure AdBack message.',
+    'description' => 'Configure AdBack profil.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('adback_solution_to_adblock_admin_settings'),
     'access arguments' => array('administer adback'),

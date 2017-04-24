@@ -88,8 +88,17 @@ a.button.button-ab {
 }
 
 .ab-discover {
-  text-align: center;
   padding: 10px;
+}
+
+.ab-discover span {
+  display: block;
+  text-align: center;
+}
+
+.ab-discover img {
+  display: block;
+  margin: 0 auto;
 }
 
 .ab-discover p {
