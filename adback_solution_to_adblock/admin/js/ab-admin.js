@@ -77,10 +77,6 @@
         }
       });
     }
-
-    if ($('#ab-settings').length > 0) {
-      $('#ab-settings-submit').click(saveMessage);
-    }
   });
 
 })(jQuery);

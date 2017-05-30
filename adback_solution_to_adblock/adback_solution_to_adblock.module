@@ -103,6 +103,16 @@ function adback_solution_to_adblock_theme() {
       'template' => 'statistics',
       'path' => drupal_get_path('module', 'adback_solution_to_adblock') . '/admin',
     ),
+    'adback_solution_to_adblock_admin_message' => array(
+      'render element' => 'form',
+      'template' => 'message',
+      'path' => drupal_get_path('module', 'adback_solution_to_adblock') . '/admin',
+    ),
+    'adback_solution_to_adblock_admin_settings' => array(
+      'render element' => 'form',
+      'template' => 'settings',
+      'path' => drupal_get_path('module', 'adback_solution_to_adblock') . '/admin',
+    ),
   );
 }
 
