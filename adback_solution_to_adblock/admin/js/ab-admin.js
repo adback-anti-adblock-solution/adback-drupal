@@ -43,9 +43,9 @@
     $('#ab-register-adback').attr('disabled', true);
     var callback = encodeURI(window.location.href);
     window.location.href = 'https://www.adback.co/en/register/?redirect_url='
-        + callback
-        + '&email=' + $(event.target).data('email')
-        + '&website=' + $(event.target).data('site-url');
+      + callback
+      + '&email=' + $(event.target).data('email')
+      + '&website=' + $(event.target).data('site-url');
   }
 
   function _logout() {
@@ -61,7 +61,7 @@
   }
 
   $(document).ready(function () {
-    if ($('[data-ab-type]').length > 0) {
+    if ($('#ab-logout').length > 0) {
       $('#ab-logout').click(_logout);
     }
 
@@ -76,10 +76,6 @@
           loginAdback();
         }
       });
-    }
-
-    if ($('#ab-settings').length > 0) {
-      $('#ab-settings-submit').click(saveMessage);
     }
   });
 

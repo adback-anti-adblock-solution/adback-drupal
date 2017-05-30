@@ -23,6 +23,7 @@ class AdbackSolutionToAdblockGeneric {
   private static $instance = NULL;
 
   protected $api;
+  protected $connected;
 
   /**
    * AdBackGeneric constructor.
@@ -151,6 +152,9 @@ class AdbackSolutionToAdblockGeneric {
    *   If the user is connected
    */
   public function isConnected($token = NULL) {
+    if ($this->connected !== null) {
+        return $this->connected;
+    }
 
     if ($token == NULL) {
       $token = $this->getToken();
@@ -162,7 +166,9 @@ class AdbackSolutionToAdblockGeneric {
 
     $this->api->setToken($token->access_token);
 
-    return $this->api->isConnected();
+    $this->connected = $this->api->isConnected();
+
+    return $this->connected;
   }
 
   /**
@@ -258,5 +264,4 @@ class AdbackSolutionToAdblockGeneric {
     variable_del('adback_solution_to_adblock_access_token');
     variable_del('adback_solution_to_adblock_refresh_token');
   }
-
 }

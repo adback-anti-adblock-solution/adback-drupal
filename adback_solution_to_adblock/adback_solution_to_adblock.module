@@ -24,6 +24,16 @@ function adback_solution_to_adblock_permission() {
 }
 
 /**
+ * Implements hook_enable()
+ */
+function adback_solution_to_adblock_enable() {
+    $api = new AdbackSolutionToAdblockApi();
+    $api->registerUser(check_plain(variable_get('site_mail', ini_get('sendmail_from'))), $GLOBALS['base_url']);
+    $time = time() + 8*24*60;
+    variable_set('adback_solution_to_adblock_incenteev_display', $time);
+}
+
+/**
  * Implements hook_menu().
  */
 function adback_solution_to_adblock_menu() {
@@ -46,11 +56,20 @@ function adback_solution_to_adblock_menu() {
     'page arguments' => array('adback_solution_to_adblock_admin_statistics'),
     'access arguments' => array('administer adback'),
     'file' => 'adback_solution_to_adblock.admin.inc',
+    'weight' => -30,
+  );
+  $items['admin/config/adback/message'] = array(
+    'title' => 'Message',
+    'description' => 'Configure AdBack message.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('adback_solution_to_adblock_admin_message'),
+    'access arguments' => array('administer adback'),
+    'file' => 'adback_solution_to_adblock.admin.inc',
     'weight' => -20,
   );
   $items['admin/config/adback/settings'] = array(
     'title' => 'Settings',
-    'description' => 'Configure AdBack message.',
+    'description' => 'Configure AdBack profil.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('adback_solution_to_adblock_admin_settings'),
     'access arguments' => array('administer adback'),
@@ -82,6 +101,16 @@ function adback_solution_to_adblock_theme() {
     'adback_solution_to_adblock_admin_statistics' => array(
       'render element' => 'form',
       'template' => 'statistics',
+      'path' => drupal_get_path('module', 'adback_solution_to_adblock') . '/admin',
+    ),
+    'adback_solution_to_adblock_admin_message' => array(
+      'render element' => 'form',
+      'template' => 'message',
+      'path' => drupal_get_path('module', 'adback_solution_to_adblock') . '/admin',
+    ),
+    'adback_solution_to_adblock_admin_settings' => array(
+      'render element' => 'form',
+      'template' => 'settings',
       'path' => drupal_get_path('module', 'adback_solution_to_adblock') . '/admin',
     ),
   );
