@@ -81,6 +81,9 @@ Download AdBack module on your Drupal website. Enable it, then register for an A
 
 == Changelog ==
 
+= 1.1.9 =
+* Use new AdBack library version
+
 = 1.1.8 =
 * Tag update
 
