@@ -66,6 +66,7 @@ class AdbackSolutionToAdblockGeneric {
       $mysite = $this->api->getScripts();
       if (isset($mysite['analytics_domain'])) {
         $this->saveDomain($mysite['analytics_domain']);
+        $this->saveMyInfos($mysite);
       }
     }
     elseif ($myinfo != "") {
@@ -240,6 +241,18 @@ class AdbackSolutionToAdblockGeneric {
   public function saveDomain($domain) {
 
     variable_set('adback_solution_to_adblock_domain', $domain);
+    variable_set('adback_solution_to_adblock_update_time', time());
+  }
+
+  /**
+   * Store the current domain.
+   *
+   * @param array $domain
+   *   All the api infos.
+   */
+  public function saveMyInfos(array $myInfos) {
+
+    variable_set('adback_solution_to_adblock_myinfo', json_encode($myInfos));
     variable_set('adback_solution_to_adblock_update_time', time());
   }
 
