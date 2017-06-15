@@ -56,13 +56,14 @@ class AdbackSolutionToAdblockGeneric {
    * @return array|bool
    *   Array with all domains.
    */
-  public function getMyInfo() {
+  public function getMyInfo($force = false) {
 
     $myinfo = variable_get('adback_solution_to_adblock_myinfo', '');
     $update_time = variable_get('adback_solution_to_adblock_update_time', 0);
+    $api_update = variable_get('adback_solution_to_adblock_api_update', false);
 
     $mysite = FALSE;
-    if ($myinfo == "" || $update_time < (time() - 86400)) {
+    if ($force || (($myinfo == "" || $update_time < (time() - 86400)) && !$api_update)) {
       $mysite = $this->api->getScripts();
       if (isset($mysite['analytics_domain'])) {
         $this->saveDomain($mysite['analytics_domain']);

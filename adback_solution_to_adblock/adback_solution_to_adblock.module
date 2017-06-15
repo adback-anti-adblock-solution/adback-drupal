@@ -179,3 +179,26 @@ function adback_solution_to_adblock_preprocess_page(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_cron().
+ *
+ * Hook cron is invoked only by standard drupal cron.
+ * It's used to replace drupal cron.
+ */
+function adback_solution_to_adblock_cron() {
+    $items['adback_solution_to_adblock_api_update_cron'] = array(
+        'description' => 'Update data from api',
+        'rule' => '0 */6 * * *',
+    );
+}
+
+/**
+ * Launch cron api update
+ */
+function adback_solution_to_adblock_api_update_cron() {
+    $adback = AdbackSolutionToAdblockGeneric::getInstance();
+
+    variable_set('adback_solution_to_adblock_api_update', true);
+    $adback->getMyInfo(true);
+}
